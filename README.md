@@ -1,4 +1,3 @@
-# AI-Data-Assistant
 # AI Data Assistant for Exploratory Data Analysis (EDA)
 
 ## Overview
@@ -25,3 +24,13 @@ pip install -r requirements.txt
 streamlit run app.EDA.py
 
 
+
+## Contributing
+Contributions are welcome! Feel free to fork the project and submit pull requests.
+
+## License
+This project is licensed under the MIT License.
+
+## Acknowledgments
+Langchain Google Gemini Pro model
+Streamlit
