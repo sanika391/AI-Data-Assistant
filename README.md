@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 streamlit run app.EDA.py
 
-
+```
 
 ## Contributing
 Contributions are welcome! Feel free to fork the project and submit pull requests.
