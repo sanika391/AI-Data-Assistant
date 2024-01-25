@@ -20,16 +20,8 @@ This project is an AI-powered data assistant designed for Exploratory Data Analy
 Ensure you have the required dependencies by installing them with:
 
 ```bash
-`pip install -r requirements.txt`
+pip install -r requirements.txt
 
-`streamlit run app.EDA.py`
+streamlit run app.EDA.py
 
-## Contributing
-Contributions are welcome! Feel free to fork the project and submit pull requests.
 
-## License
-This project is licensed under the MIT License.
-
-## Acknowledgments
-Langchain Google Gemini Pro model
-Streamlit
