@@ -9,3 +9,5 @@ langchain_experimental
 #langchian_openai
 langchain_google_genai
 wikipedia
+tabulate
+
