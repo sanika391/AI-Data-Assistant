@@ -3,7 +3,8 @@
 ## Overview
 
 This project is an AI-powered data assistant designed for Exploratory Data Analysis (EDA). It leverages the Langchain Google Gemini Pro model and Streamlit to provide an interactive interface for users to perform EDA with CSV files. The assistant includes various pre-installed models to handle user queries related to data science, as well as a dedicated Pandas agent capable of addressing diverse data-related queries.
-[Streamlit App](https://saha-trideep-ai-data-assistant-app-eda-ojemtn.streamlit.app/)
+Here you can find and try:
+[Data Assistant](https://saha-trideep-ai-data-assistant-app-eda-ojemtn.streamlit.app/)
 
 ---
 
