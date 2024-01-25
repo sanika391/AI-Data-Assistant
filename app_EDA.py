@@ -313,15 +313,11 @@ def main():
         if user_csv is not None:
             # Initialize pandas_agent
             llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=GOOGLE_API_KEY)
-            pandas_agent = create_pandas_dataframe_agent(llm, user_csv, verbose=True)
+            pandas_agent = create_pandas_dataframe_agent(llm, user_csv, verbose=True, handle_parsing_errors=True)
 
             st.header("Exploratory Data Analysis")
             st.subheader("General information about dataset")
             data_overview(user_csv, pandas_agent)
-                
-        
-
-          
         
             st.subheader("Variable of study")
                 
@@ -363,17 +359,19 @@ def main():
                             #     st.write(solution)
                                 
 
-                with st.sidebar:
-                    with st.expander("What are the steps of EDA"):
-                        topic = 'What are the steps of Exploratory Data Analysis'
-                        resp = suggestion_model(GOOGLE_API_KEY, topic)
-                        st.write(resp)
+            with st.sidebar:
+                with st.expander("What are the steps of EDA"):
+                    topic = 'What are the steps of Exploratory Data Analysis'
+                    resp = suggestion_model(GOOGLE_API_KEY, topic)
+                    st.write(resp)
 
-                        llm_suggestion = st.text_input("Ask Me Data Science Problem:")
-                        if llm_suggestion:
-                            llm_result = suggestion_model(GOOGLE_API_KEY, llm_suggestion)
-                            st.write(f"**LLM Suggestion:**")
-                            st.write(llm_result)
+                with st.expander("Get Help"):
+                    llm_suggestion = st.text_area("Ask Me Data Science Problem:")
+
+                    if st.button("Tell me"):
+                        llm_result = suggestion_model(GOOGLE_API_KEY, llm_suggestion)
+                        st.write(llm_result)
+
 
 
 
