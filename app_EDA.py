@@ -7,14 +7,17 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 from dotenv import load_dotenv
 
-from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent, create_python_agent
+# from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
+from langchain_experimental.agents.agent_toolkits.pandas.base import create_pandas_dataframe_agent
+from langchain_experimental.agents.agent_toolkits.python.base import create_python_agent
 from langchain.prompts import PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 
+
 from langchain.chains import LLMChain, SimpleSequentialChain, SequentialChain
 from langchain_experimental.tools import PythonREPLTool
-from langchain.agents.agent_types import AgentType
+from langchain.agents import AgentType, initialize_agent
 from langchain_community.utilities import WikipediaAPIWrapper
 
 
@@ -82,9 +85,10 @@ def prompt_templates():
     input_variables=['business_problem'],
     template='Convert the following business problem into a data science problem: {business_problem}.'
     )
-    template='''Give a list of machine learning algorithms with number sequence and as well as step by step 
+    template='''Give a list of machine learning algorithms and as well as step by step 
     python code for any one algorithm that you think is suitable to solve 
     this problem: {data_problem}, while using this Wikipedia research: {wikipedia_research}.'''
+    
     model_selection_template = PromptTemplate(
         input_variables=['data_problem', 'wikipedia_research'],
         template=template
@@ -111,22 +115,22 @@ def chains_output(prompt, wiki_research, _model):
     return my_data_problem, my_model_selection
 
 # Function to extract machine learning algorithms from the output
-@st.cache_data
-def list_to_selectbox(input_text):
-    algorithms_list = []
-    lines = input_text.split('\n')
+# @st.cache_data
+# def list_to_selectbox(input_text):
+#     algorithms_list = []
+#     lines = input_text.split('\n')
 
-    for line in lines:
-        # Use regular expression to find lines that seem to contain algorithm names
-        match = re.search(r'\b([A-Za-z\s]+)\b', line)
-        if match:
-            algorithm_name = match.group(1).strip()
-            algorithms_list.append(algorithm_name)
+#     for line in lines:
+#         # Use regular expression to find lines that seem to contain algorithm names
+#         match = re.search(r'\b([A-Za-z\s]+)\b', line)
+#         if match:
+#             algorithm_name = match.group(1).strip()
+#             algorithms_list.append(algorithm_name)
 
-    # Insert "Select Algorithm" at the beginning
-    # algorithms_list.insert(0, "Select Algorithm")
+#     # Insert "Select Algorithm" at the beginning
+#     algorithms_list.insert(0, "Select Algorithm")
 
-    return algorithms_list
+#     return algorithms_list
 
 # Function is part of the LangChain library and is used to create a Python Agent
 # @st.cache_resource
@@ -135,7 +139,7 @@ def list_to_selectbox(input_text):
 #         llm=_model,
 #         tool=PythonREPLTool(),
 #         verbose=True,
-#         agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+#         agent_type=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
 #         handle_parsing_errors=True,
 #         )
 #     return agent_executor
@@ -316,17 +320,7 @@ def main():
             data_overview(user_csv, pandas_agent)
                 
         
-    # with st.sidebar:
-    #     with st.expander("What are the steps of EDA"):
-    #         topic = 'What are the steps of Exploratory Data Analysis'
-    #         resp = suggestion_model(GOOGLE_API_KEY, topic)
-    #         st.write(resp)
 
-    #     llm_suggestion = st.text_input("Ask me for a suggestion:")
-    #     if llm_suggestion:
-    #         llm_result = suggestion_model(GOOGLE_API_KEY, llm_suggestion)
-    #         st.write(f"**LLM Suggestion:**")
-    #         st.write(llm_result)
           
         
             st.subheader("Variable of study")
@@ -359,17 +353,27 @@ def main():
                             st.write(my_data_problem)
                             st.write("**Machine Learning Algorithm Suggestions:**")
                             st.write(my_model_selection)
-                            algorithm_list = list_to_selectbox(my_model_selection)
+                            # algorithm_list = list_to_selectbox(my_model_selection)
                             # st.write(algorithm_list)
                             # selected_algorithm = st.selectbox("Select Machine Learning Algorithm", algorithm_list)
                             
-                            # if selected_algorithm:
+                            # if selected_algorithm != "Select Algorithm":
                             #     st.subheader("Assumption")
                             #     solution = python_solution(my_data_problem, selected_algorithm, user_csv, pandas_agent)
                             #     st.write(solution)
                                 
 
+                with st.sidebar:
+                    with st.expander("What are the steps of EDA"):
+                        topic = 'What are the steps of Exploratory Data Analysis'
+                        resp = suggestion_model(GOOGLE_API_KEY, topic)
+                        st.write(resp)
 
+                        llm_suggestion = st.text_input("Ask Me Data Science Problem:")
+                        if llm_suggestion:
+                            llm_result = suggestion_model(GOOGLE_API_KEY, llm_suggestion)
+                            st.write(f"**LLM Suggestion:**")
+                            st.write(llm_result)
 
 
 
